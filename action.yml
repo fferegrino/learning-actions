@@ -6,6 +6,9 @@ inputs:
     description: Person to greet
     required: false
     default: World
+  language:
+    description: Language for the greeting (ES or EN)
+    required: true
 
 outputs:
   greeting:
@@ -15,12 +18,31 @@ outputs:
 runs:
   using: composite
   steps:
+    - name: Validate language
+      shell: bash
+      env:
+        LANGUAGE: ${{ inputs.language }}
+      run: |
+        case "$LANGUAGE" in
+          ES|EN) ;;
+          *)
+            echo "::error::Unsupported language '$LANGUAGE'. Allowed values: ES, EN"
+            exit 1
+            ;;
+        esac
+
     - name: Create greeting
       id: greeting
       shell: bash
       env:
         WHO_TO_GREET: ${{ inputs.who-to-greet }}
-      run: echo "text=Hello, $WHO_TO_GREET!" >> "$GITHUB_OUTPUT"
+        LANGUAGE: ${{ inputs.language }}
+      run: |
+        if [ "$LANGUAGE" = "ES" ]; then
+          echo "text=¡Hola, $WHO_TO_GREET!" >> "$GITHUB_OUTPUT"
+        else
+          echo "text=Hello, $WHO_TO_GREET!" >> "$GITHUB_OUTPUT"
+        fi
 
     - name: Print greeting
       shell: bash
