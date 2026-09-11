@@ -11,10 +11,19 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Test default input
-        uses: ./
-
-      - name: Test custom input
+      - name: Run action
+        id: hello
         uses: ./
         with:
           who-to-greet: Antonio
+
+      - name: Verify result
+        run: |
+          expected="Hello, Antonio!"
+          actual="${{ steps.hello.outputs.greeting }}"
+
+          if [ "$actual" != "$expected" ]; then
+            echo "Expected: $expected"
+            echo "Actual: $actual"
+            exit 1
+          fi

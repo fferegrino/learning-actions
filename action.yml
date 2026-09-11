@@ -7,9 +7,21 @@ inputs:
     required: false
     default: World
 
+outputs:
+  greeting:
+    description: The generated greeting
+    value: ${{ steps.greeting.outputs.text }}
+
 runs:
   using: composite
   steps:
+    - name: Create greeting
+      id: greeting
+      shell: bash
+      env:
+        WHO_TO_GREET: ${{ inputs.who-to-greet }}
+      run: echo "text=Hello, $WHO_TO_GREET!" >> "$GITHUB_OUTPUT"
+
     - name: Print greeting
       shell: bash
-      run: echo "Hello, ${{ inputs.who-to-greet }}!"
+      run: echo "${{ steps.greeting.outputs.text }}"
