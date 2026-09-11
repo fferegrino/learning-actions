@@ -27,3 +27,21 @@ jobs:
             echo "Actual: $actual"
             exit 1
           fi
+
+      - name: Run action
+        id: hola
+        uses: fferegrino/learning-actions@main
+        with:
+          who-to-greet: Antonio
+          language: ES
+
+      - name: Verify result
+        run: |
+          expected="¡Hola, Antonio!"
+          actual="${{ steps.hola.outputs.greeting }}"
+
+          if [ "$actual" != "$expected" ]; then
+            echo "Expected: $expected"
+            echo "Actual: $actual"
+            exit 1
+          fi
