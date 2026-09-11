@@ -30,7 +30,7 @@ jobs:
 
       - name: Run action
         id: hola
-        uses: fferegrino/learning-actions@main
+        uses: fferegrino/learning-actions@v2.0.0
         with:
           who-to-greet: Antonio
           language: ES
