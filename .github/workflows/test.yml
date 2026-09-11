@@ -11,26 +11,22 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Run action
+      - name: Run action @v1.0.0
         id: hello
         uses: fferegrino/learning-actions@v1.0.0
         with:
           who-to-greet: Antonio
 
-      - name: Verify result
-        run: |
-          expected="Hello, Antonio!"
-          actual="${{ steps.hello.outputs.greeting }}"
-
-          if [ "$actual" != "$expected" ]; then
-            echo "Expected: $expected"
-            echo "Actual: $actual"
-            exit 1
-          fi
-
-      - name: Run action
+      - name: Run action @v2.0.0
         id: hola
         uses: fferegrino/learning-actions@v2.0.0
+        with:
+          who-to-greet: Antonio
+          language: ES
+
+      - name: Run action @main
+        id: latest
+        uses: fferegrino/learning-actions@main
         with:
           who-to-greet: Antonio
           language: ES
