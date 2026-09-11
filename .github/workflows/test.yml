@@ -2,6 +2,7 @@ name: Test action
 
 on:
   push:
+  pull_request:
   workflow_dispatch:
 
 jobs:
@@ -10,5 +11,10 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Run the action from this checkout
+      - name: Test default input
         uses: ./
+
+      - name: Test custom input
+        uses: ./
+        with:
+          who-to-greet: Antonio
